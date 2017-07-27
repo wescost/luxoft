@@ -34,7 +34,6 @@ namespace ConsoleApp1
                         writetext.WriteLine(counter);
                         y++;
                     }
-
                 }
             }
         }
