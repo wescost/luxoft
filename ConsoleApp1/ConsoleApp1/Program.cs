@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -11,29 +8,26 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            string text = System.IO.File.ReadAllText(@"Data\data.txt");
+            string text = File.ReadAllText(@"Data\data.txt");
             var wordsList = text.Split(new Char[] { ' ', ';', '\"', ',',':' }, StringSplitOptions.RemoveEmptyEntries);
+            var dictionary =new Dictionary<string, int>();
 
-            using (StreamWriter writetext = new StreamWriter(@"Data\result.txt"))
+            foreach (var word in wordsList)
             {
-                var y = 0;
-                foreach (var word in wordsList)
+                if (dictionary.ContainsKey(word))
                 {
-                    if (word != "*")
-                    {
-                        int counter = 0;
-                        writetext.Write(word + " ");
-                        for (int i = y; i < wordsList.Length; i++)
-                        {
-                            if (word == wordsList[i])
-                            {
-                                counter++;
-                                wordsList[i] = "*";
-                            }
-                        }
-                        writetext.WriteLine(counter);
-                        y++;
-                    }
+                    dictionary[word]++;
+                    continue;
+                }
+
+                dictionary[word] = 1;
+            }
+
+            using (StreamWriter writer = new StreamWriter(@"Data\result.txt"))
+            {
+                foreach (var item in dictionary)
+                {
+                    writer.WriteLine($"{item.Key} {item.Value}");
                 }
             }
         }
